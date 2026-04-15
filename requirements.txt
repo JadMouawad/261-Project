@@ -8,6 +8,7 @@ pandas>=2.2
 scikit-learn>=1.5
 matplotlib>=3.9
 seaborn>=0.13
+statsmodels>=0.14
 
 fredapi>=0.5.2
 python-dotenv>=1.0
