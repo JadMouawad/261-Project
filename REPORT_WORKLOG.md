@@ -18,13 +18,13 @@ This file tracks implementation steps, fixes, experiments, and outcomes across t
 
 ## Timeline and Changes
 
-### 2026-04-10
+### Phase 1 - Project Setup
 - Initialized notebook-first scaffold.
 - Added core folders: `notebooks/`, `data/raw/`, `data/processed/`, `models/`, `results/`, `src/`.
 - Added shared utility module `src/project_utils.py` for deterministic seeds and path handling.
 - Added first audit notebook: `notebooks/00_project_overview_and_repo_audit.ipynb`.
 
-### 2026-04-15 (Data + Features + Baselines)
+### Phase 2 - Data, Features, and Baselines
 - Added data ingestion notebook: `notebooks/01_data_ingestion_and_target_definition.ipynb`.
   - FRED load with cache fallback.
   - Explicit target config and metadata save.
@@ -37,14 +37,14 @@ This file tracks implementation steps, fixes, experiments, and outcomes across t
   - Naive, seasonal naive, ARIMA, Ridge, Lasso.
   - Baseline table and metrics saved under `results/baselines/`.
 
-### 2026-04-15 (Split Review and Fix)
+### Phase 3 - Split Review and Fix
 - Issue identified: earlier train split had little/no COVID-period exposure in fitting.
 - Fix applied in notebook 02:
   - Added `SPLIT_STRATEGY` with `covid_aware` mode.
   - New default keeps recent months for val/test and includes COVID-era data in train.
 - Regenerated downstream outputs after split update.
 
-### 2026-04-15 (Model Protocol Improvements)
+### Phase 4 - Model Protocol Improvements
 - LSTM notebook (`04_lstm_nowcasting.ipynb`):
   - Validation used for epoch selection.
   - Final model refit on `train+val` before test scoring.
@@ -52,7 +52,7 @@ This file tracks implementation steps, fixes, experiments, and outcomes across t
   - Added alpha tuning for Ridge/Lasso.
   - Added linear prediction clipping guardrail to prevent extreme extrapolation in shifted regimes.
 
-### 2026-04-15 (Focused Tuning Pass)
+### Phase 5 - Focused Tuning
 - Ran targeted tuning sweeps for XGBoost and LSTM.
 - Key change that improved both models:
   - Predict **delta** (`target - Inflation_prev`) and reconstruct level at inference.
@@ -100,10 +100,29 @@ All metrics below are on held-out test (`2023-12-01` to `2026-01-01`).
 
 ## Entry Template (Copy/Paste)
 ```markdown
-### YYYY-MM-DD
+### New Entry
 - Change:
 - Why:
 - Files touched:
 - Verification done:
 - Metrics impact:
 ```
+
+
+### Phase 6 - Backtesting and Uncertainty
+- Added `notebooks/06_backtesting_and_uncertainty.ipynb`.
+- Implemented XGBoost walk-forward backtest with expanding windows, per-window chronology checks, and saved JSON/MD summaries.
+- Added optional lightweight LSTM rolling section (disabled by default for runtime).
+- Implemented LSTM uncertainty with:
+  - MC-dropout intervals on test set
+  - split-conformal intervals calibrated on validation residuals only
+- Saved outputs:
+  - `results/backtest/backtest_metrics.json`
+  - `results/backtest/backtest_table.md`
+  - `results/uncertainty/coverage.json`
+  - `results/uncertainty/uncertainty_plot.png`
+  - `results/uncertainty/conformal_artifacts.npz`
+- Verification completed in notebook:
+  - backtest chronology pass
+  - empirical coverage recompute pass
+  - interval/index alignment pass
