@@ -1,6 +1,6 @@
 ﻿# Inflation Nowcasting (Course Project)
 
-This repository is a notebook-first class project for monthly inflation nowcasting.
+This is a notebook-first class project for monthly inflation nowcasting.
 
 ## Project goal
 Build a reproducible monthly inflation nowcasting pipeline using FRED macro series, with:
@@ -30,7 +30,7 @@ Build a reproducible monthly inflation nowcasting pipeline using FRED macro seri
 ## Notebook-first workflow
 1. Open `notebooks/00_project_overview_and_repo_audit.ipynb`.
 2. Run cells top-to-bottom.
-3. Continue with later numbered notebooks as they are added.
+3. Continue in notebook order from `01` to `07`.
 
 Each notebook is designed to run on a fresh clone after dependency installation, assuming either:
 - `FRED_API_KEY` is set, or
@@ -60,10 +60,10 @@ $Env:FRED_API_KEY="your_32_char_fred_key"
 
 ## Planned notebook sequence
 - `00_project_overview_and_repo_audit.ipynb`: project scope, repo audit, target-definition decision.
-- `01_data_ingestion_and_caching.ipynb`: FRED pull plus local cache strategy.
-- `02_feature_engineering_and_targets.ipynb`: engineered features plus configurable target definition.
-- `03_splits_and_sequence_building.ipynb`: 70/15/15 split, context windows, deterministic dataset objects.
-- `04_lstm_baseline.ipynb`: stacked LSTM training and evaluation.
-- `05_xgboost_baseline.ipynb`: tabular baseline and comparison.
+- `01_data_ingestion_and_target_definition.ipynb`: FRED pull/load, monthly alignment, explicit target definition.
+- `02_feature_engineering_and_splits.ipynb`: engineered features, feature registry, and chronological split logic.
+- `03_classical_baselines.ipynb`: naive/ARIMA/linear baselines and table output.
+- `04_lstm_nowcasting.ipynb`: stacked LSTM training and evaluation.
+- `05_xgboost_and_tree_models.ipynb`: XGBoost training and representation comparison.
 - `06_backtesting_and_uncertainty.ipynb`: rolling backtest, MC-dropout, conformal intervals.
-- `07_results_summary.ipynb`: model comparison table and final visuals.
+- `07_ablation_and_model_selection.ipynb`: focused ablations and recommended config summary.

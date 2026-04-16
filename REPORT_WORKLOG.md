@@ -3,7 +3,7 @@
 This file tracks implementation steps, fixes, experiments, and outcomes across the notebook workflow.
 
 ## How to Use This Log
-- Add a new dated entry each time you change data logic, model logic, or evaluation setup.
+- Add a new entry each time you change data logic, model logic, or evaluation setup.
 - Record what changed, why it changed, and what the result was.
 - Keep metrics tied to the exact split and target used at that time.
 
@@ -58,20 +58,21 @@ This file tracks implementation steps, fixes, experiments, and outcomes across t
   - Predict **delta** (`target - Inflation_prev`) and reconstruct level at inference.
 - XGBoost tuned defaults now in notebook 05:
   - `lag_length=24`, `target_mode='delta'`.
+  - tuned tree regularization/column sampling kept the model stable and improved held-out MAE.
 - LSTM tuned defaults now in notebook 04:
   - `lag_length=24`, `target_mode='delta'`.
 - Tuning artifacts saved:
   - `results/tuning/xgb_tuning_results.csv`
   - `results/tuning/lstm_tuning_results.csv`
 
-## Latest Test Metrics (Current Best Run)
-All metrics below are on held-out test (`2023-12-01` to `2026-01-01`).
+## Latest Test Metrics (Current Saved Run)
+All metrics below are on held-out test (`2023-12-01` to `2026-01-01`) from the latest saved notebook outputs.
 
 | Model | MAE | sMAPE | MASE |
 | --- | ---: | ---: | ---: |
-| XGB (improved, mean_pooled, delta, lag=24) | 0.1693 | 6.0069 | 0.5850 |
+| XGB (mean_pooled, delta, lag=24) | 0.1611 | 5.8400 | 0.5568 |
 | NaiveLast | 0.1787 | 6.3683 | 0.6175 |
-| LSTM (improved, delta, lag=24) | 0.1787 | 6.5612 | 0.6176 |
+| LSTM (delta, lag=24) | 0.1787 | 6.5612 | 0.6176 |
 | ARIMA(1,0,0) | 0.3161 | 11.0215 | 1.0922 |
 | Lasso(mean_pooled) | 0.8007 | 28.1270 | 2.7669 |
 | SeasonalNaive | 0.8453 | 24.1892 | 2.9210 |
@@ -93,10 +94,9 @@ All metrics below are on held-out test (`2023-12-01` to `2026-01-01`).
   - Updated restore check to evaluate against fit target (`y_val_fit`).
 
 ## Open Items for Final Report
-- Add rolling backtest notebook with fully consistent setup and report rolling MAE distribution.
-- Add uncertainty and conformal interval notebook using updated best models.
+- Add a short narrative comparing why XGBoost currently beats LSTM on this dataset.
 - Add model error slices (high-inflation vs low-inflation months).
-- Add ablation table: split strategy, lag length, target mode (`level` vs `delta`).
+- Add final visuals from ablations and uncertainty sections into one report notebook.
 
 ## Entry Template (Copy/Paste)
 ```markdown
