@@ -72,6 +72,15 @@ Modeling table includes these groups:
 - **Inflation memory / volatility:** `Infl_ema`, `Infl_vol6`, `Inflation_prev`
 - **Calendar / regime:** `MoY_sin`, `MoY_cos`, `COVID`
 
+### Note on `COVID` feature importance
+`COVID` has zero gain in the final XGBoost model, and this is expected in our setup.
+
+Why:
+- the `COVID=1` period is short (16 months: 2020-03 to 2021-06)
+- validation and test windows are post-COVID in this split, so `COVID` is always 0 there
+- XGBoost selected splits that generalize on validation, and `COVID` does not add signal in those windows
+- pandemic dynamics are already indirectly captured by other macro features (rates, oil, labor, inflation-memory features)
+
 ## 6) Robustness checks
 - Rolling walk-forward (XGBoost):
   - MAE: **0.2946**
