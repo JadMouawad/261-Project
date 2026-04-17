@@ -126,3 +126,19 @@ All metrics below are on held-out test (`2023-12-01` to `2026-01-01`) from the l
   - backtest chronology pass
   - empirical coverage recompute pass
   - interval/index alignment pass
+
+
+### Phase 7 - Cleanup + Optimization Pass
+- Cleaned notebook wording/formatting in the final report notebook so sections read naturally and are easy to present.
+- Improved classical linear baselines in notebook 03:
+  - added `LINEAR_TARGET_MODE` (`delta` vs `level`)
+  - switched Ridge/Lasso fit target to delta mode by default
+  - kept representation comparison (`mean_pooled` vs `flattened`)
+  - added clipping guardrail on final linear predictions to avoid unstable extrapolation
+- Updated XGBoost defaults in notebook 05 using the better focused-search region (same protocol, better validation behavior).
+- Re-ran notebooks 03, 04, 05, 06, 07, and 08 to regenerate all dependent outputs.
+- Net metric changes after rerun:
+  - XGBoost MAE improved to `0.1584` (from `0.1611`)
+  - Best classical baseline became `Lasso[mean_pooled]` at MAE `0.1663`
+  - LSTM remained around MAE `0.1787`
+  - rolling backtest summary MAE improved slightly to `0.2946`

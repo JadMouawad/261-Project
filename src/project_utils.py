@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import os
 import random
 from pathlib import Path
@@ -7,29 +5,26 @@ from pathlib import Path
 import numpy as np
 
 
-def project_root() -> Path:
-    """Resolve repository root regardless of notebook working directory."""
+def project_root():
     return Path(__file__).resolve().parents[1]
 
 
-def ensure_project_dirs() -> dict[str, Path]:
-    """Create standard output folders and return their paths."""
-    root = project_root()
-    paths = {
-        "root": root,
-        "notebooks": root / "notebooks",
-        "raw_data": root / "data" / "raw",
-        "processed_data": root / "data" / "processed",
-        "models": root / "models",
-        "results": root / "results",
-    }
-    for key in ("raw_data", "processed_data", "models", "results"):
-        paths[key].mkdir(parents=True, exist_ok=True)
-    return paths
+def ensure_project_dirs():
+    r = project_root()
+    p = {}
+    p["root"] = r
+    p["notebooks"] = r / "notebooks"
+    p["raw_data"] = r / "data" / "raw"
+    p["processed_data"] = r / "data" / "processed"
+    p["models"] = r / "models"
+    p["results"] = r / "results"
+
+    for k in ("raw_data","processed_data","models","results"):
+        p[k].mkdir(parents=True,exist_ok=True)
+    return p
 
 
-def seed_everything(seed: int = 42) -> None:
-    """Set deterministic seeds for python, numpy, and TensorFlow if available."""
+def seed_everything(seed = 42):
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
