@@ -142,3 +142,21 @@ All metrics below are on held-out test (`2023-12-01` to `2026-01-01`) from the l
   - Best classical baseline became `Lasso[mean_pooled]` at MAE `0.1663`
   - LSTM remained around MAE `0.1787`
   - rolling backtest summary MAE improved slightly to `0.2946`
+
+
+### Phase 8 - LSTM Timing/Lag Investigation
+- Noticed visual lag in LSTM test plot (predictions looked delayed relative to actual turns).
+- Added formal lag diagnostic to `notebooks/04_lstm_nowcasting.ipynb`:
+  - evaluates shifted MAE/correlation for shifts `-3..+3`
+  - saves `results/lstm/lag_diagnostic.json`
+  - saves `results/lstm/lag_diagnostic_plot.png`
+- Key diagnostic result on test:
+  - unshifted MAE: `0.1787`
+  - best shifted MAE at `shift=-1`: `0.1063`
+  - confirms ~1-month delay behavior.
+- Tried non-leaky fixes in tuning scripts (`results/tuning/`):
+  - lag-aware config sweep
+  - trend-aware custom loss
+  - bidirectional LSTM variant
+  - validation-only timing calibration
+- Outcome: no tested variant gave a clear win on both timing and held-out MAE at the same time.
