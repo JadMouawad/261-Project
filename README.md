@@ -21,6 +21,9 @@ Notes to avoid ambiguity:
 ```text
 .
 |-- notebooks/
+|-- docs/
+|   |-- REPORT.md
+|   `-- RESULTS.md
 |-- data/
 |   |-- raw/
 |   `-- processed/

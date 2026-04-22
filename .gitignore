@@ -19,6 +19,12 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Private working notes (local only)
+REPORT_WORKLOG.md
+REPORT_WORKLOG*.md
+docs/REPORT_WORKLOG.md
+docs/REPORT_WORKLOG*.md
+
 # Data artifacts (keep folder structure with .gitkeep)
 data/raw/*
 !data/raw/.gitkeep

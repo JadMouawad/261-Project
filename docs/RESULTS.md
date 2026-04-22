@@ -1,4 +1,4 @@
-# Results (Pretty Version)
+# Results
 
 This is the cleaned final review of what we got from the project.
 
