@@ -54,3 +54,8 @@ results/*
 .coverage
 coverage.xml
 htmlcov/
+
+# Reproducible no-key cache files (kept in repo)
+!data/raw/fred_macro_monthly_raw.csv
+!data/processed/aligned_macro_target.csv
+!data/processed/target_definition_metadata.json

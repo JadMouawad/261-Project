@@ -71,6 +71,8 @@ Fresh-clone assumption:
 - dependencies are installed, and
 - either `FRED_API_KEY` is set or cached `data/raw` and `data/processed` files already exist.
 
+This repo includes a cached snapshot (`data/raw/fred_macro_monthly_raw.csv` and aligned target files) so notebook `01` can run even when no API key is set.
+
 ## Canonical Artifact Names and Locations
 ### Data
 - `data/raw/fred_macro_monthly_raw.csv`

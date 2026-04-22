@@ -1,0 +1,38 @@
+{
+  "created_utc": "2026-04-22T17:34:27.249994+00:00",
+  "target_mode": "yoy",
+  "forecast_horizon_months": 1,
+  "target_name": "target_yoy_t_plus_1",
+  "start_date": "1985-01-01",
+  "end_date": null,
+  "raw_cache_path": "data\\raw\\fred_macro_monthly_raw.csv",
+  "processed_dataset_path": "data\\processed\\aligned_macro_target.csv",
+  "series_codes": {
+    "CPI": "CPIAUCNS",
+    "Unemployment": "UNRATE",
+    "InterestRate": "FEDFUNDS",
+    "M2": "M2SL",
+    "Treasury10Y": "GS10",
+    "OilPrice": "DCOILWTICO",
+    "PPI": "PPIACO",
+    "RetailSales": "RSXFS",
+    "Sentiment": "UMCSENT",
+    "Employment": "PAYEMS",
+    "HousingStarts": "HOUST"
+  },
+  "monthly_aggregation": {
+    "CPI": "last",
+    "Unemployment": "last",
+    "InterestRate": "last",
+    "M2": "last",
+    "Treasury10Y": "last",
+    "OilPrice": "mean",
+    "PPI": "last",
+    "RetailSales": "last",
+    "Sentiment": "last",
+    "Employment": "last",
+    "HousingStarts": "last"
+  },
+  "n_rows": 483,
+  "n_cols": 14
+}
