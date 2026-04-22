@@ -45,7 +45,13 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Optional API key setup:
+Optional API key setup (`.env` recommended):
+```bash
+cp .env.example .env
+# then edit .env and add your real key
+```
+
+PowerShell env var also works:
 ```powershell
 $Env:FRED_API_KEY="your_32_char_fred_key"
 ```

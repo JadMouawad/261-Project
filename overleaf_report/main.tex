@@ -6,9 +6,9 @@
 \usepackage{hyperref}
 \usepackage{setspace}
 \setstretch{1.05}
-\title{Inflation Nowcasting Report}
-\author{Course Project}
-\date{\today}
+\title{CMPS261 Project Report}
+\author{Jiany Samara \\ Jad Mouawad}
+\date{}
 
 \begin{document}
 \maketitle
@@ -21,10 +21,10 @@ Main target in final evaluation is \texttt{target\_yoy\_t\_plus\_1}, i.e., next-
 
 Preprocessing steps used:
 \begin{enumerate}
-  \item load from FRED or cached files,
-  \item enforce monthly alignment and duplicate checks,
-  \item construct leakage-safe forecast target (horizon = 1 month),
-  \item engineer macro features,
+  \item load from FRED or cached files
+  \item enforce monthly alignment and duplicate checks
+  \item construct leakage-safe forecast target (horizon = 1 month)
+  \item engineer macro features
   \item build chronological train/val/test split.
 \end{enumerate}
 
@@ -45,28 +45,28 @@ Final split used in the report: train 347 rows (to 2021-11-01), validation 24 ro
 \section{Methodology}
 Workflow is notebook-first and strictly chronological:
 \begin{itemize}
-  \item feature engineering and split logic,
-  \item classical baselines,
-  \item stacked LSTM,
-  \item XGBoost,
-  \item rolling backtest and uncertainty diagnostics,
+  \item feature engineering and split logic
+  \item classical baselines
+  \item stacked LSTM
+  \item XGBoost
+  \item rolling backtest and uncertainty diagnostics
   \item ablations and final comparison.
 \end{itemize}
 
 Leakage controls:
 \begin{itemize}
-  \item validation used for model selection,
-  \item test used only once for final scoring,
-  \item MASE scale built from in-sample history only,
+  \item validation used for model selection
+  \item test used only once for final scoring
+  \item MASE scale built from in-sample history only
   \item conformal calibration from validation residuals only.
 \end{itemize}
 
 \section{Models and Justification}
 Models compared:
 \begin{itemize}
-  \item Classical: Naive, Seasonal Naive, ARIMA, Ridge, Lasso.
-  \item Neural: stacked LSTM.
-  \item Tree model: XGBoost.
+  \item Classical: Naive, Seasonal Naive, ARIMA, Ridge, Lasso
+  \item Neural: stacked LSTM
+  \item Tree model: XGBoost
 \end{itemize}
 
 Why this set: it gives an honest baseline range, then tests whether more complex models truly add out-of-sample value.
@@ -94,6 +94,8 @@ Seasonal Naive & 0.8453 & 24.1892 & 2.9210 \\
 \end{table}
 
 Best final model is XGBoost by all three metrics.
+This suggests nonlinear interactions in the macro features matter, and XGBoost was able to use them better than the sequence model in this sample size.
+Lasso being close to the top also shows there is still a strong linear signal in the engineered features.
 
 \begin{figure}[H]
 \centering
@@ -123,12 +125,14 @@ Best final model is XGBoost by all three metrics.
 
 \section{Backtest and Uncertainty}
 Rolling walk-forward backtest (XGBoost, 25 windows): MAE 0.2946, sMAPE 13.3662, MASE 1.4372.
+Compared to the single hold-out test, the rolling scores are weaker, which indicates performance changes across different macro regimes.
 
 Uncertainty diagnostics (LSTM):
 \begin{itemize}
-  \item MC-dropout coverage: 0.625 (under nominal 0.90),
-  \item split-conformal coverage: 1.000 (over nominal 0.90).
+  \item MC-dropout coverage: 0.625 (under nominal 0.90)
+  \item split-conformal coverage: 1.000 (over nominal 0.90)
 \end{itemize}
+So the MC-dropout intervals are too narrow, while conformal intervals are conservative on this period.
 
 \begin{figure}[H]
 \centering
@@ -168,9 +172,11 @@ If predictions are shifted by one month, MAE drops to 0.1063 (LSTM) and 0.0498 (
 \begin{enumerate}
   \item XGBoost is the strongest final model on the shared held-out benchmark.
   \item Lasso is a strong and simple baseline close to the winner.
-  \item LSTM is useful for sequence comparison but did not beat XGBoost here.
-  \item Performance varies by macro regime in rolling windows.
+  \item LSTM learned general movement but did not beat XGBoost and showed slight timing delay around turning points.
+  \item Performance varies by macro regime in rolling windows, so one fixed score does not tell the full story.
   \item Interval calibration still needs improvement for practical risk bounds.
+  \item Overall, for this monthly macro setup, careful feature engineering plus tree models gave the best accuracy-cost tradeoff.
+  \item Next step would be to improve turning-point timing and re-calibrate uncertainty intervals.
 \end{enumerate}
 
 \end{document}

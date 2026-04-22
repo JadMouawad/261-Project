@@ -9,8 +9,24 @@ def project_root():
     return Path(__file__).resolve().parents[1]
 
 
+def load_project_env():
+    root = project_root()
+    env_path = root / ".env"
+    if not env_path.exists():
+        return False
+
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv(env_path, override=False)
+        return True
+    except Exception:
+        return False
+
+
 def ensure_project_dirs():
     r = project_root()
+    load_project_env()
     p = {}
     p["root"] = r
     p["notebooks"] = r / "notebooks"
